@@ -1,46 +1,40 @@
-
-## main.py
-```python
-"""
-HW04 — Forest Watchtower (Balanced Tree Check)
-
-Implement TreeNode and is_balanced(root) to check if a binary tree is height-balanced.
-"""
-
-
 class TreeNode:
     """
     Simple binary tree node: value, left, right.
     """
-
     def __init__(self, value, left=None, right=None):
-        # TODO: store the given fields on the instance
-        # Example:
-        # self.value = value
-        # self.left = left
-        # self.right = right
-        pass
+        self.value = value
+        self.left = left
+        self.right = right
 
 
 def is_balanced(root):
     """
     Return True if the binary tree rooted at `root` is height-balanced.
-
-    Empty tree (root is None) is considered balanced.
     """
-    # TODO (8 Steps of Coding, minimal prompts):
-    # - Design a helper that checks balance and height in one traversal.
-    # - Implement the recursive logic.
-    # - Test on small examples (empty tree, single node, skewed tree).
-    raise NotImplementedError("Implement is_balanced in main.py")
 
+    def check(node):
+        """
+        Returns (is_balanced, height)
+        - If unbalanced: return (False, 0)
+        """
+        if node is None:
+            return True, 0  # empty tree → balanced, height = 0
 
-if __name__ == "__main__":
-    # Optional: quick manual tree
-    #   1
-    #  / \
-    # 2   3
-    left = TreeNode(2)
-    right = TreeNode(3)
-    root = TreeNode(1, left, right)
-    print(is_balanced(root))
+        left_bal, left_height = check(node.left)
+        if not left_bal:
+            return False, 0
+
+        right_bal, right_height = check(node.right)
+        if not right_bal:
+            return False, 0
+
+        # Check current node balance
+        if abs(left_height - right_height) > 1:
+            return False, 0
+
+        # Height of this subtree
+        return True, max(left_height, right_height) + 1
+
+    balanced, _ = check(root)
+    return balanced
